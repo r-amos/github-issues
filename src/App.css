@@ -1,1 +1,17 @@
+.test {
+  animation: moveInBottom 0.5s ease-out 0.75s;
+  animation-fill-mode: backwards;
+  padding-bottom: 10px;
+}
 
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(30rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

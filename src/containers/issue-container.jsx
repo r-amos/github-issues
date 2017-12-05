@@ -14,7 +14,14 @@ class IssueContainer extends Component {
     }
 
     const issues = Object.keys(this.props.data).map((issue, index) => {
-      return <Issue key={index} title={this.props.data[issue].title} />;
+      return (
+        <Issue
+          className={"test"}
+          key={index}
+          delay={index}
+          title={this.props.data[issue].title}
+        />
+      );
     });
 
     return <div>{issues}</div>;
