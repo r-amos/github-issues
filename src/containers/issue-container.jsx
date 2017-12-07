@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Issue from "../components/issue";
-import { fetchIssues } from "../redux/actions/actions";
+import { fetchIssues } from "../redux/actions/issues";
 
 class IssueContainer extends Component {
   componentWillMount() {
@@ -30,7 +30,7 @@ class IssueContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    data: state
+    data: state.issues
   };
 };
 
