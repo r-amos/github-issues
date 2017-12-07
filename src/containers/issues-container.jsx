@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Issue from "../components/issue";
+import Issues from "../components/issues";
 import { fetchIssues } from "../redux/actions/issues";
 
 import PaginationBar from "../components/pagination-bar";
 
-class IssueContainer extends Component {
+class IssuesContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +19,7 @@ class IssueContainer extends Component {
   }
 
   render() {
+    console.log(this.props);
     if (!this.props.data) {
       return <div>Loading...</div>;
     }
@@ -34,11 +35,12 @@ class IssueContainer extends Component {
         index + 1 <= activePage * pageLimit
       ) {
         issues.push(
-          <Issue
+          <Issues
             className={"test"}
             key={index}
             delay={index}
             title={this.props.data[issue].title}
+            number={this.props.data[issue].number}
           />
         );
       }
@@ -62,8 +64,8 @@ const mapStateToProps = state => {
   };
 };
 
-IssueContainer.defaultProps = {
+IssuesContainer.defaultProps = {
   data: {}
 };
 
-export default connect(mapStateToProps)(IssueContainer);
+export default connect(mapStateToProps)(IssuesContainer);
