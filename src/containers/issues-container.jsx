@@ -19,7 +19,6 @@ class IssuesContainer extends Component {
   }
 
   render() {
-    console.log(this.props);
     if (!this.props.data) {
       return <div>Loading...</div>;
     }

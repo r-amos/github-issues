@@ -1,6 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
-import { fetchIssue } from "../redux/actions/issue";
+import { Link } from "react-router-dom";
 
 const Issues = props => {
   const style = {
@@ -8,20 +7,10 @@ const Issues = props => {
   };
 
   return (
-    <div
-      onClick={() => props.onIssueClick(props.number)}
-      className={props.className}
-      style={style}
-    >
-      {props.title}
+    <div className={props.className} style={style}>
+      <Link to={`/issue/${props.number}`}>{props.title}</Link>
     </div>
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onIssueClick: number => dispatch(fetchIssue(number))
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Issues);
+export default Issues;
