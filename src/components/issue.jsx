@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchIssue } from "../redux/actions/issue";
+import { fetchIssue, removeIssue } from "../redux/actions/issue";
 import { Link } from "react-router-dom";
 
 class Issue extends Component {
@@ -8,9 +8,13 @@ class Issue extends Component {
     this.props.getIssue(this.props.match.params.id);
   }
 
+  componentWillUnmount() {
+    this.props.clearIssue(this.props.match.params.id);
+  }
+
   render() {
     if (!this.props.issue) {
-      return <div>Loding...</div>;
+      return <div>Loading...</div>;
     }
     return (
       <div>
@@ -31,7 +35,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getIssue: number => dispatch(fetchIssue(number))
+    getIssue: number => dispatch(fetchIssue(number)),
+    clearIssue: number => dispatch(removeIssue(number))
   };
 };
 

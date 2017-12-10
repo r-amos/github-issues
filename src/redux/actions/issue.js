@@ -20,6 +20,16 @@ const recieveIssue = (number, json) => {
   };
 };
 
+export const REMOVE_ISSUE = "REMOVE_ISSUE";
+
+export const removeIssue = number => {
+  return {
+    type: REMOVE_ISSUE,
+
+    number
+  };
+};
+
 export const fetchIssue = number => async dispatch => {
   dispatch(requestIssue(number));
 
