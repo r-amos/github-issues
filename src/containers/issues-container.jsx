@@ -15,7 +15,7 @@ class IssuesContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.dispatch(fetchIssues(""));
+    this.props.dispatch(fetchIssues("https://api.github.com/repos/octocat/Hello-World/issues"));
   }
 
   render() {
