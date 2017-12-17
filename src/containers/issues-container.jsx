@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Issues from "../components/issues";
-import { fetchIssues } from "../redux/actions/issues";
+import { initializeData, fetchIssues } from "../redux/actions/issues";
 
 import PaginationBar from "../components/pagination-bar";
 
@@ -15,7 +15,9 @@ class IssuesContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.dispatch(fetchIssues("https://api.github.com/repos/octocat/Hello-World/issues"));
+    this.props.initialize(
+      "https://api.github.com/repos/octocat/Hello-World/issues"
+    );
   }
 
   render() {
@@ -25,32 +27,27 @@ class IssuesContainer extends Component {
 
     const issues = [];
     const keys = Object.keys(this.props.data);
-    const { pageLimit, activePage } = this.state;
-    const pages = Math.ceil(keys.length / pageLimit) + 1;
 
     keys.forEach((issue, index) => {
-      if (
-        index >= (activePage - 1) * pageLimit &&
-        index + 1 <= activePage * pageLimit
-      ) {
-        issues.push(
-          <Issues
-            className={"test"}
-            key={index}
-            delay={index}
-            title={this.props.data[issue].title}
-            number={this.props.data[issue].number}
-          />
-        );
-      }
+      issues.push(
+        <Issues
+          className={"test"}
+          key={index}
+          delay={index}
+          title={this.props.data[issue].title}
+          number={this.props.data[issue].number}
+        />
+      );
     });
 
     return (
       <div>
         <div>{issues}</div>
         <PaginationBar
-          pages={pages}
-          onPaginationClick={page => this.setState({ activePage: page })}
+          pages={this.props.pages}
+          onClickHandler={pageNumber =>
+            this.props.onPageButtonClick(pageNumber)
+          }
         />
       </div>
     );
@@ -58,8 +55,18 @@ class IssuesContainer extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
-    data: state.issues
+    data: state.issues,
+    pages: state.numberOfPages,
+    url: state.repoURL
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initialize: url => dispatch(initializeData(url)),
+    onPageButtonClick: pageNumber => dispatch(fetchIssues(pageNumber))
   };
 };
 
@@ -67,4 +74,4 @@ IssuesContainer.defaultProps = {
   data: {}
 };
 
-export default connect(mapStateToProps)(IssuesContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(IssuesContainer);
