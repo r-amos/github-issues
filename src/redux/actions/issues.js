@@ -1,4 +1,5 @@
 import { setRepoURL } from "./repo";
+import { noOfPages } from "./pages";
 
 export const GET_INITIAL_DATA = "GET_INITIAL_DATA";
 
@@ -6,15 +7,6 @@ const getInitialData = url => {
   return {
     type: GET_INITIAL_DATA,
     url
-  };
-};
-
-export const NUMBER_OF_PAGES = "NUMBER_OF_PAGES";
-
-const noOfPages = number => {
-  return {
-    type: NUMBER_OF_PAGES,
-    pages: number
   };
 };
 
@@ -64,13 +56,13 @@ export const initializeData = url => async dispatch => {
     const pageUrl = link.next.replace(/\?(page=)\w+/g, "");
 
     dispatch(setRepoURL(pageUrl));
-
+    
     const numberOfPages = parseInt(
       link.last
         .match(/(page=)\w+/g)[0]
         .replace(/page=/g, " ")
         .trim()
-    );
+    ,10);
 
     dispatch(noOfPages(numberOfPages));
 
@@ -103,48 +95,3 @@ export const fetchIssues = pageNumber => async (dispatch, getState) => {
   }
 };
 
-/*
-  export const REQUEST_PAGE_ISSUE = "REQUEST_PAGE_ISSUE";
-  
-  const requestPageIssues = url => {
-    return {
-      type: REQUEST_PAGE_ISSUE,
-  
-      url
-    };
-  };
-  
-  
-
-export const RECIEVE_PAGE_ISSUES = "RECIEVE_PAGE_ISSUES";
-
-const recievePageIssues = (url, json) => {
-  return {
-    type: RECIEVE_PAGE_ISSUES,
-
-    url,
-
-    json
-  };
-};
-
-export const fetchPageIssues = url => async dispatch => {
-  
-    dispatch(requestPageIssues(url));
-  
-    try {
-  
-      const response = await fetch(url);
-  
-      const json = await response.json();
-  
-      dispatch(recievePageIssues(url, json));
-  
-    } catch (error) {
-  
-      console.error(`Error Fetching Issues: ${error}`);
-  
-    }
-  };
-
-*/

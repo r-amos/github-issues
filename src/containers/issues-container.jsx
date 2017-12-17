@@ -1,32 +1,38 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Issues from "../components/issues";
+import Loading from "../components/loading";
 import { initializeData, fetchIssues } from "../redux/actions/issues";
 
 import PaginationBar from "../components/pagination-bar";
 
 class IssuesContainer extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {
-      pageLimit: 10,
-      activePage: 1
-    };
+    this.state = {page: 1}
   }
 
   componentWillMount() {
     this.props.initialize(
-      "https://api.github.com/repos/octocat/Hello-World/issues"
+      "https://api.github.com/repos/facebook/react/issues"
     );
   }
 
+  onPageButtonClick = page => {
+    this.setState({page})
+    this.props.fetchPageIssues(page)
+  }
+
   render() {
+
+    const {data, pages} = this.props;
+
     if (!this.props.data) {
-      return <div>Loading...</div>;
+      return <Loading />
     }
 
-    const issues = [];
-    const keys = Object.keys(this.props.data);
+    const issues = [], keys = Object.keys(data);
 
     keys.forEach((issue, index) => {
       issues.push(
@@ -34,19 +40,21 @@ class IssuesContainer extends Component {
           className={"test"}
           key={index}
           delay={index}
-          title={this.props.data[issue].title}
-          number={this.props.data[issue].number}
+          title={data[issue].title}
+          number={data[issue].number}
         />
       );
     });
 
     return (
       <div>
+        <h1>{this.state.page}</h1>
         <div>{issues}</div>
         <PaginationBar
-          pages={this.props.pages}
+          currentPage={this.state.page}
+          pages={pages}
           onClickHandler={pageNumber =>
-            this.props.onPageButtonClick(pageNumber)
+            this.onPageButtonClick(pageNumber)
           }
         />
       </div>
@@ -55,18 +63,16 @@ class IssuesContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     data: state.issues,
-    pages: state.numberOfPages,
-    url: state.repoURL
+    pages: state.numberOfPages
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     initialize: url => dispatch(initializeData(url)),
-    onPageButtonClick: pageNumber => dispatch(fetchIssues(pageNumber))
+    fetchPageIssues: pageNumber => dispatch(fetchIssues(pageNumber))
   };
 };
 

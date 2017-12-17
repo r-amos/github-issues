@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchIssue, removeIssue } from "../redux/actions/issue";
+import Loading from "./loading";
 import { Link } from "react-router-dom";
 
 class Issue extends Component {
@@ -14,7 +15,7 @@ class Issue extends Component {
 
   render() {
     if (!this.props.issue) {
-      return <div>Loading...</div>;
+      return <Loading />;
     }
     return (
       <div>

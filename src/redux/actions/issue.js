@@ -30,13 +30,16 @@ export const removeIssue = number => {
   };
 };
 
-export const fetchIssue = number => async dispatch => {
+export const fetchIssue = number => async (dispatch, getState) => {
   dispatch(requestIssue(number));
 
   try {
-    const response = await fetch(
-      `https://api.github.com/repos/octocat/Hello-World/issues/${number}`
-    );
+
+    const { repoURL } = getState();
+
+    const issuesPageURL = `${repoURL}/${number}`;
+
+    const response = await fetch(issuesPageURL);
 
     const json = await response.json();
 
